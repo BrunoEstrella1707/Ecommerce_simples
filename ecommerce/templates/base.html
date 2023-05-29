@@ -21,15 +21,32 @@
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav me-auto">
               <a class="nav-link active" aria-current="page" href="{{url_for('page_home')}}">Home</a>
-              <a class="nav-link" href="{{url_for('page_produtos')}}">Produtos</a>
+              <a class="nav-link" href="{{url_for('page_produtos')}}">Products</a>
             </div>
             <div class="navbar-nav ms-auto">
                 <a class="nav-link" href="#">Login</a>
-                <a class="nav-link" href="{{url_for('page_cadastro')}}">Cadastro</a>
+                <a class="nav-link" href="{{url_for('page_cadastro')}}">Register</a>
             </div>
           </div>
         </div>
       </nav>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close">
+              </button>
+              {{message}}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
        {% block conteudo %}
 
        {% endblock %}

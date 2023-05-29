@@ -9,8 +9,29 @@
     <div class="container">
         <img class="mb-4" src="https://cdn-icons-png.flaticon.com/512/5087/5087579.png" style="width: 200px">
         <h1 class="h3 mb-3 font-weight-normal">
-            Crie sua conta
+            Create your account
         </h1>
+        <form method='POST' class='form-register', style="color: whitesmoke;">
+            
+            {{ form.hidden_tag() }}
+
+            {{ form.usuario.label() }}
+            {{ form.usuario(class='form-control', placeholder='Inform your Username') }}
+
+            {{ form.email.label() }}
+            {{ form.email(class='form-control', placeholder='Inform your email') }}
+
+            {{ form.senha1.label() }}
+            {{ form.senha1(class='form-control', placeholder='Inform your password') }}
+
+            {{ form.senha2.label() }}
+            {{ form.senha2(class='form-control', placeholder='Confirm your password') }}
+
+            <br><div class="d-grid">
+                {{ form.submit(class='btn btn-lg btn-success') }}
+            </div>
+
+        </form>
     </div>
 </body>
 {% endblock %}
