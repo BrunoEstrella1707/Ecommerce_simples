@@ -5,11 +5,10 @@ from ecommerce.models import User
 
 
 class CadastroForm(FlaskForm):
-    def validate_username(self, check_user):
+    def validate_usuario(self, check_user):
         user = User.query.filter_by(usuario=check_user.data).first()
         if user:
-            raise ValidationError('User alredy registered!')
-
+            raise ValidationError("Username alredy registered")
 
     def validate_email(self, check_email):
         email = User.query.filter_by(email=check_email.data).first()
@@ -30,6 +29,10 @@ class CadastroForm(FlaskForm):
     senha2 = PasswordField(label='Confirm your Password: ',  validators=[EqualTo('senha1'), DataRequired()])
     submit = SubmitField(label='Register')
     
-    
 
-    
+
+class LoginForm(FlaskForm):
+
+    usuario = StringField(label='Username: ', validators=[DataRequired()])
+    senha = PasswordField(label='Password: ',  validators=[DataRequired()])
+    submit = SubmitField(label='Login')

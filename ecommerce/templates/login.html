@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+    Login
+{% endblock %}
+
+{% block conteudo %}
+    <body class="text-center">
+        <div class="container">
+            <img class="mb-4" src="https://cdn-icons-png.flaticon.com/512/5087/5087579.png" style="width: 200px">
+            <h1 class="h3 mb-3 font-weight-normal">
+                Login
+            </h1>
+            <form method="POST", class="form-singin", style="color:whitesmoke">
+                {{ form.hidden_tag() }}
+
+                {{ form.usuario.label() }}
+                {{ form.usuario(class='form-control', placeholder='Inform your Username') }}
+
+                {{ form.senha.label() }}
+                {{ form.senha(class='form-control', placeholder='Inform your password') }}
+
+                <br>
+                    <div class="checkbox mb-3">
+                        <h5>Or creat an account</h5>
+                        <a href="{{url_for('page_cadastro')}}">Register</a>
+                    </div>
+                <br>
+
+                <div class="d-grid">
+                    {{ form.submit(class='btn btn-lg btn-success') }}
+                </div>
+            </form>
+        </div>
+    </body>
+    
+{% endblock %}
