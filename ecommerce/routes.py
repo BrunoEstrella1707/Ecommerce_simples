@@ -1,9 +1,9 @@
 from ecommerce import app
-from flask import render_template, redirect, url_for, flash
+from flask import render_template, redirect, url_for, flash, request
 from ecommerce.models import Item, User
-from ecommerce.forms import CadastroForm, LoginForm
+from ecommerce.forms import CadastroForm, LoginForm, CompraProdutoForm
 from ecommerce import db
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 
 
 @app.route('/')
@@ -11,12 +11,26 @@ def page_home():
     return render_template("home.html")
 
 
-@app.route('/produtos')
+@app.route('/produtos', methods=['GET', 'POST'])
 @login_required
 def page_produtos():
 
-    itens = Item.query.all()
-    return render_template("produtos.html", itens=itens)
+    compra_form = CompraProdutoForm()
+    if request.method == 'POST':
+        compra_produto = request.form.get('compra_produto')
+        produto_obj = Item.query.filter_by(nome=compra_produto).first()
+
+        if produto_obj:
+            if current_user.compra_disponivel(produto_obj):
+                produto_obj.compra(current_user)
+                flash(f'Congrats for your purchase!!! You just bought {produto_obj.nome}', category='success')
+            else:
+                flash(f'Not enough cash, stranger!!!', category='danger')
+        return redirect(url_for('page_produtos'))
+    
+    if request.method == 'GET':
+        itens = Item.query.filter_by(dono=None)
+        return render_template("produtos.html", itens=itens, compra_form=compra_form)
 
 
 @app.route('/cadastro', methods=['GET', 'POST'])
@@ -31,6 +45,7 @@ def page_cadastro():
         db.session.add(usuario)
         db.session.commit()
         return redirect(url_for('page_produtos'))
+    
     if form.errors != {}:
         for error in form.errors.values():
             flash(f'Erro ao cadastrar {error}', category='danger')
