@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block conteudo %}
-    <div class="row", style="margin-top: 20px; margin-left: 20px;">
+    <div class="row", style="margin-top: 20px; margin-left: 10px;">
         <div class="col-8">
             <h2>Available Products</h2>
                 <hr>
@@ -41,6 +41,32 @@
         <div class="col-4">
             <h2>Your Products</h2>
             <hr>
+            <div class="row">
+            {% for dono_item in dono_itens %}
+            {% include 'includes/dono_modal_produtos.html' %}
+                <div class="col-md-6">
+                    <div class="card text-center bg-dark" style="width: 18rem;">
+                        <div class="card-body">
+                          <h5 class="card-title">{{dono_item.nome}}</h5>
+                          <button
+                           style="margin-bottom: 10px; margin-top: 10px;"
+                           data-bs-toggle="modal"
+                           data-bs-target="#exampleModalVenda-{{ dono_item.id }}"
+                           class="btn btn-outline-danger"
+                           type="button"
+                          >
+                            Sell
+                        </button>
+                          <p>
+                            <strong>
+                                R$ {{dono_item.preco}}
+                            </strong>
+                          </p>
+                        </div>
+                      </div>
+                </div>
+            {% endfor %}    
+            </div>
         </div>
     </div>
 {% endblock %}

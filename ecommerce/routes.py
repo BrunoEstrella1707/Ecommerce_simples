@@ -1,7 +1,7 @@
 from ecommerce import app
 from flask import render_template, redirect, url_for, flash, request
 from ecommerce.models import Item, User
-from ecommerce.forms import CadastroForm, LoginForm, CompraProdutoForm
+from ecommerce.forms import CadastroForm, LoginForm, CompraProdutoForm, VendaProdutoForm
 from ecommerce import db
 from flask_login import login_user, logout_user, login_required, current_user
 
@@ -16,7 +16,11 @@ def page_home():
 def page_produtos():
 
     compra_form = CompraProdutoForm()
+    venda_form = VendaProdutoForm()
+
     if request.method == 'POST':
+
+        # Compra de Produtos
         compra_produto = request.form.get('compra_produto')
         produto_obj = Item.query.filter_by(nome=compra_produto).first()
 
@@ -26,11 +30,25 @@ def page_produtos():
                 flash(f'Congrats for your purchase!!! You just bought {produto_obj.nome}', category='success')
             else:
                 flash(f'Not enough cash, stranger!!!', category='danger')
+
+        # Venda de Produtos
+        venda_produto = request.form.get('venda_produto')
+        produto_obj_venda = Item.query.filter_by(nome=venda_produto).first()
+
+        if produto_obj_venda:
+            if current_user.venda_disponivel(produto_obj_venda):
+                produto_obj_venda.venda(current_user)
+                flash(f'You just sold {produto_obj_venda.nome}', category='success')
+            else:
+                flash(f'Something went wrong!!!', category='danger')
+
+
         return redirect(url_for('page_produtos'))
     
     if request.method == 'GET':
         itens = Item.query.filter_by(dono=None)
-        return render_template("produtos.html", itens=itens, compra_form=compra_form)
+        dono_itens = Item.query.filter_by(dono=current_user.id)
+        return render_template("produtos.html", itens=itens, compra_form=compra_form, dono_itens=dono_itens, venda_form=venda_form)
 
 
 @app.route('/cadastro', methods=['GET', 'POST'])

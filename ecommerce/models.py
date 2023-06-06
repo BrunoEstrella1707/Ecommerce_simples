@@ -37,6 +37,9 @@ class User(db.Model, UserMixin):
     def compra_disponivel(self, produto_obj):
         return self.credito >= produto_obj.preco
     
+    def venda_disponivel(self, produto_obj):
+        return produto_obj in self.itens
+    
 
 
 
@@ -54,6 +57,11 @@ class Item(db.Model):
     def compra(self, usuario):
         self.dono = usuario.id
         usuario.credito -= self.preco
+        db.session.commit()
+
+    def venda(self, usuario):
+        self.dono = None
+        usuario.credito += self.preco
         db.session.commit()
 
     
