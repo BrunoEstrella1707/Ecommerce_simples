@@ -10,3 +10,7 @@
   <li>Flask-WTF</li>
   <li>Flask-SQLAlchemy</li>
 </ul>
+
+### Descrição:
+A aplicação simula um site de ecommerce onde é possível comprar e vender produtos de acordo com a disponibilidade e o valor.
+
