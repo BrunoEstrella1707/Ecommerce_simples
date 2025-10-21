@@ -2,12 +2,13 @@ from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+import os
 
 db = SQLAlchemy()
 login_manager = LoginManager()
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///ecommerce.db"
-app.config["SECRET_KEY"] = '77d14c70a72c25c6bedfbe88'
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI")
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 db.init_app(app)
 bcrypt = Bcrypt(app)
 login_manager.init_app(app)

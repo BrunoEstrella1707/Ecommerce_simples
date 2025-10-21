@@ -3,3 +3,4 @@ venv
 *.db
 /instance/*.db
 __pycache__/
+.env
